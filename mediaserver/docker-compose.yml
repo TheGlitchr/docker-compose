@@ -1,0 +1,141 @@
+plex:
+  image: plexinc/pms-docker
+  container_name: plex
+  volumes:
+    - /data/movies:/data/movies
+    - /data/tv:/data/tv
+    - /data/music:/data/music
+    - /config/plex:/config
+    - /transcode:/transcode
+  restart: unless-stopped
+  net: "host"
+
+plexpy:
+  image: linuxserver/plexpy
+  container_name: plexpy
+  volumes:
+    - /config/plexpy:/config
+    - /config/plex/Library/Application\ Support/Plex\ Media\ Server/Logs:/logs:ro
+  restart: unless-stopped
+  ports:
+    - 8181:8181
+
+sonarr:
+  image: linuxserver/sonarr
+  container_name: sonarr
+  volumes:
+    - /etc/localtime:/etc/localtime:ro
+    - /config/sonarr:/config
+    - /data/tv:/tv
+    - /data/download/sabnzbd/complete/tv:/downloads
+  restart: unless-stopped
+  ports:
+    - 8989:8989
+
+couchpotato:
+  image: linuxserver/couchpotato
+  container_name: couchpotato
+  volumes:
+    - /config/couchpotato:/config
+    - /data/download/sabnzbd/complete/movies:/downloads
+    - /data/movies:/movies
+  restart: unless-stopped
+  ports:
+    - 5050:5050
+
+sabnzbd:
+    image: linuxserver/sabnzbd
+    container_name: sabnzbd
+    volumes:
+      - /config/sabnzbd:/config
+      - /data/download/sabnzbd/complete:/downloads
+      - /data/download/sabnzbd/incomplete:/incomplete-downloads
+    restart: unless-stopped
+    ports:
+      - 8080:8080
+
+deluge:
+    image: linuxserver/deluge
+    container_name: deluge
+    volumes:
+      - /data/download/deluge:/downloads
+      - /config/deluge:/config
+    net: "host"
+    restart: unless-stopped
+
+mylar:
+  image: linuxserver/mylar
+  container_name: mylar
+  volumes:
+    - /data/comics:/comics
+    - /data/download/sabnzbd/complete/comics:/downloads
+    - /config/mylar:/config/
+  restart: unless-stopped
+  ports:
+    - 8090:8090
+
+ubooquity:
+  image: linuxserver/ubooquity
+  container_name: ubooquity
+  volumes:
+    - /config/ubooquity:/config
+    - /data/books:/books
+    - /data/comics:/comics
+  ports:
+    - 2202:2202
+    - 2203:2203
+  restart: unless-stopped
+
+calire-web:
+  image: linuxserver/calibre-web
+  container_name: calibre-web
+  volumes:
+    - /config/calibre-web:/config
+    - /data/books:/books
+  ports:
+    - 8083:8083
+  restart: unless-stopped
+
+resilio-sync:
+  image: linuxserver/resilio-sync
+  container_name: resilio-sync
+  volumes:
+    - /config/resilio-sync:/config
+    - /data/sync:/sync/folder
+  restart: unless-stopped
+  ports:
+    - 8888:8888
+    - 55555:55555
+
+portainer:
+  image: portainer/portainer
+  container_name: portainer
+  volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+  restart: unless-stopped
+  ports:
+    - 9000:9000
+
+ts3:
+  image: linuxserver/gsm-ts3
+  container_name: gsm-ts3
+  net: "host"
+  volumes:
+    - /etc/localtime:/etc/localtime:ro
+    - /config/ts3:/config
+  restart: unless-stopped
+
+openvpn-as:
+  image: linuxserver/openvpn-as
+  container_name: openvpn-as
+  volumes:
+    - /config/openvpn-as:/config
+  net: "host"
+
+watchtower:
+  image: v2tec/watchtower
+  container_name: watchtower
+  net: "host"
+  volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+  restart: unless-stopped
