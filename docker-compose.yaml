@@ -1,0 +1,16 @@
+caddy:
+  image: abiosoft/caddy:php
+  container_name: caddy
+  volumes:
+    - /var/www:/srv
+    - /etc/caddy/CaddyFile:/etc/Caddyfile
+    - /transcode:/transcode
+  restart: unless-stopped
+  ports:
+    - 80:80
+    - 443:443
+    - 2015:2015
+
+
+
+
