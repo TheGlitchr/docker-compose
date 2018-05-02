@@ -2,14 +2,11 @@ caddy:
   image: abiosoft/caddy:php
   container_name: caddy
   volumes:
-    - $HOME/caddystack/www:/srv
-    - $HOME/caddystack/caddy:/etc/Caddyfile
+    - /etc/caddy/certs:/root/.caddy \
+    - /var/www:/srv
+    - /etc/caddy/Caddyfile:/etc/Caddyfile
   restart: unless-stopped
   ports:
     - 80:80
     - 443:443
     - 2015:2015
-
-
-
-
