@@ -5,6 +5,8 @@ caddy:
     - /etc/caddy/certs:/root/.caddy
     - /var/www:/srv
     - /etc/caddy:/etc
+  environment:
+    - ACME_AGREE=true
   restart: unless-stopped
   ports:
     - 80:80
