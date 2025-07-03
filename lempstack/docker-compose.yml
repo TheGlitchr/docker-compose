@@ -1,37 +1,60 @@
-nginx:
+services:
+  nginx:
     image: 'bitnami/nginx'
+    container_name: lempstack_nginx
     ports:
-        - '80:80'
-        - '443:443'
-    links:
-        - phpfpm
+      - '80:80'
+      - '443:443'
     volumes:
-        - ./logs/access.log:/opt/bitnami/nginx/logs/myapp-access.log
-        - ./logs/error.log:/opt/bitnami/nginx/logs/myapp-error.log
-        - ./nginx/app.conf:/bitnami/nginx/conf/vhosts/app.conf
-        - ./public:/myapps
-phpfpm:
+      - ./logs/access.log:/opt/bitnami/nginx/logs/myapp-access.log
+      - ./logs/error.log:/opt/bitnami/nginx/logs/myapp-error.log
+      - ./nginx/app.conf:/bitnami/nginx/conf/vhosts/app.conf
+      - ./public:/myapps
+    depends_on:
+      - phpfpm
+    networks:
+      - lempstack_network
+    restart: unless-stopped
+
+  phpfpm:
     image: 'bitnami/php-fpm'
+    container_name: lempstack_phpfpm
     ports:
-        - '9000:9000'
+      - '9000:9000'
     volumes:
-        - ./public:/myapps
-mysql:
+      - ./public:/myapps
+    networks:
+      - lempstack_network
+    restart: unless-stopped
+
+  mysql:
     image: 'mariadb'
+    container_name: lempstack_mysql
     ports:
-        - '3306:3306'
+      - '3306:3306'
     volumes:
-        - ./db-data:/var/lib/mysql
+      - ./db-data:/var/lib/mysql
     environment:
-        - MYSQL_ROOT_PASSWORD=Colt1911
-phpmyadmin:
+      - MYSQL_ROOT_PASSWORD=Colt1911
+    networks:
+      - lempstack_network
+    restart: unless-stopped
+
+  phpmyadmin:
     image: 'phpmyadmin/phpmyadmin'
-    restart: always
+    container_name: lempstack_phpmyadmin
+    restart: unless-stopped
     ports:
-       - '8080:80'
-    links:
-        - mysql:mysql
+      - '8080:80'
     environment:
-        MYSQL_USERNAME: root
-        MYSQL_ROOT_PASSWORD: Colt1911
-        PMA_HOST: mysql
+      - MYSQL_USERNAME=root
+      - MYSQL_ROOT_PASSWORD=Colt1911
+      - PMA_HOST=mysql
+    depends_on:
+      - mysql
+    networks:
+      - lempstack_network
+
+networks:
+  lempstack_network:
+    driver: bridge

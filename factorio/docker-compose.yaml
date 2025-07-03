@@ -1,11 +1,16 @@
-version: '2'
 services:
-    factorio:
-      image: dtandersen/factorio
-      container_name: factorio
-      volumes:
-        - /opt/factorio:/factorio
-      ports:
-        - 34197:34197/udp
-        - 27015:27015/tcp
-      restart: unless-stopped
+  factorio:
+    image: dtandersen/factorio
+    container_name: factorio
+    volumes:
+      - /opt/factorio:/factorio
+    ports:
+      - 34197:34197/udp
+      - 27015:27015/tcp
+    restart: unless-stopped
+    networks:
+      - factorio_network
+
+networks:
+  factorio_network:
+    driver: bridge

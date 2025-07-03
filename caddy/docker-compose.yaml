@@ -1,14 +1,21 @@
-caddy:
-  image: abiosoft/caddy:php
-  container_name: caddy
-  volumes:
-    - /etc/caddy/certs:/root/.caddy
-    - /var/www:/srv
-    - /etc/caddy:/etc
-  environment:
-    - ACME_AGREE=true
-  restart: unless-stopped
-  ports:
-    - 80:80
-    - 443:443
-    - 2015:2015
+services:
+  caddy:
+    image: caddy:latest
+    container_name: caddy
+    volumes:
+      - /etc/caddy/certs:/data
+      - /var/www:/srv
+      - /etc/caddy:/etc/caddy
+    environment:
+      - ACME_AGREE=true
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+      - 2015:2015
+    networks:
+      - caddy_network
+
+networks:
+  caddy_network:
+    driver: bridge
