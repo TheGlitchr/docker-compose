@@ -94,6 +94,27 @@ Services that require host networking (Plex, Deluge, TeamSpeak, OpenVPN) use `ne
 3. Check logs for any warnings: `docker compose logs`
 4. Validate data persistence across container restarts
 
+## Password and Secrets Management
+
+### 11. Externalized Sensitive Configuration
+- **Issue**: Hardcoded passwords and sensitive data in compose files
+- **Action**: 
+  - Moved `MYSQL_ROOT_PASSWORD` and `MYSQL_USERNAME` to environment variables
+  - Created `.env` files for each stack with dummy passwords
+  - Added security notes and configuration guidance
+
+### Environment Files Created:
+- `/lempstack/.env` - Database credentials
+- `/caddy/.env` - ACME configuration
+- `/mediaserver/.env` - API keys and user configuration  
+- `/factorio/.env` - Game server configuration
+
+### Security Benefits:
+- Passwords no longer committed to version control
+- Easy environment-specific configuration
+- Better security practices for production deployments
+- Centralized configuration management
+
 ## Compliance with Docker Compose Specification
 
-All files now comply with the latest Docker Compose Specification and follow current best practices as documented in the official Docker documentation.
+All files now comply with the latest Docker Compose Specification and follow current best practices as documented in the official Docker documentation. The addition of `.env` files follows Docker Compose's recommended approach for managing sensitive configuration data.

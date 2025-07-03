@@ -35,7 +35,7 @@ services:
     volumes:
       - ./db-data:/var/lib/mysql
     environment:
-      - MYSQL_ROOT_PASSWORD=Colt1911
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
     networks:
       - lempstack_network
     restart: unless-stopped
@@ -47,8 +47,8 @@ services:
     ports:
       - '8080:80'
     environment:
-      - MYSQL_USERNAME=root
-      - MYSQL_ROOT_PASSWORD=Colt1911
+      - MYSQL_USERNAME=${MYSQL_USERNAME}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - PMA_HOST=mysql
     depends_on:
       - mysql

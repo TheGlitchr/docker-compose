@@ -7,7 +7,7 @@ services:
       - /var/www:/srv
       - /etc/caddy:/etc/caddy
     environment:
-      - ACME_AGREE=true
+      - ACME_AGREE=${ACME_AGREE}
     restart: unless-stopped
     ports:
       - 80:80
