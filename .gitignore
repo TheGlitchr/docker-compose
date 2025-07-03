@@ -1,0 +1,21 @@
+# Environment files with sensitive configuration
+**/.env
+**/.env.local
+**/.env.production
+
+# Docker volumes and data
+**/db-data/
+**/logs/
+
+# Backup files
+*.backup
+*.bak
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
